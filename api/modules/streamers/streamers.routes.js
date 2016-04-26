@@ -4,8 +4,8 @@ var router = require('express').Router();
 
 var streamersController = require('./streamers.controller');
 
-router.get('/', streamersController.getBuild);
-router.get('/', streamersController.getPrefs);
-router.put('/', streamersController.updatePrefs);
+router.get('/build', streamersController.getBuild);
+router.get('/prefs', streamersController.getPrefs);
+router.put('/prefs', streamersController.updatePrefs);
 
 module.exports = router;

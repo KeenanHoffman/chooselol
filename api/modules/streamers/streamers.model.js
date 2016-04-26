@@ -9,6 +9,7 @@ module.exports = Waterline.Collection.extend({
     username: 'string',
     email: 'string',
     password: 'string',
+    summoner_name: 'string',
     twitch_name: 'string',
     twitch_chat_password: 'string'
   }

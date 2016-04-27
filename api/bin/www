@@ -22,6 +22,11 @@ orm.initialize(app, app.get('port'), function(collections, connections) {
     var bind = typeof addr === 'string' ? 'pipe ' + addr : 'port ' + addr.port;
     debug('Listening on ' + bind);
   }
+  var io = require('socket.io')(server);
+  io.on('connection', function(/*socket*/){
+    console.log('a user connected');
+  });
+  app.io = io;
 });
 
 function normalizePort(val) {

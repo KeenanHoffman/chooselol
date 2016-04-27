@@ -3,7 +3,7 @@
 var irc = require('irc');
 var request = require('request-promise');
 
-module.exports = function(config, clients) {
+module.exports = function(config, clients, io) {
 
   //add a new irc client for the current user
   clients[config.twitch_name] = new irc.Client("irc.chat.twitch.tv", config.botName, {
@@ -55,6 +55,9 @@ module.exports = function(config, clients) {
         runePages.push(page.name);
       });
 
+      //Let chat know voting is open
+      clients[config.twitch_name].say(config.channels[0], 'HeartOfGold.lol Voting is Open!!!');
+
       //set an event listener for the twitch chat
       clients[config.twitch_name].addListener("message", function(from, to, text, message) {
 
@@ -77,6 +80,7 @@ module.exports = function(config, clients) {
             } else {
               clients[config.twitch_name].build.champs[champName] = 1;
             }
+            io.emit('build update', clients[config.twitch_name].build);
           } else {
             console.log('invalid: ' + champName);
           }
@@ -97,6 +101,7 @@ module.exports = function(config, clients) {
             } else {
               clients[config.twitch_name].build.masteries[(masteryNumber - 1)] = 1;
             }
+            io.emit('build update', clients[config.twitch_name].build);
           } else {
             console.log('invalid: ' + masteryNumber);
           }
@@ -117,6 +122,7 @@ module.exports = function(config, clients) {
             } else {
               clients[config.twitch_name].build.runes[(runeNumber - 1)] = 1;
             }
+            io.emit('build update', clients[config.twitch_name].build);
           } else {
             console.log('invalid: ' + runeNumber);
           }
@@ -133,6 +139,7 @@ module.exports = function(config, clients) {
           if (max === 'q' || max === 'w' || max === 'e') {
             console.log('valid: ' + max);
             clients[config.twitch_name].build.max[max]++;
+            io.emit('build update', clients[config.twitch_name].build);
           } else {
             console.log('invalid: ' + max);
           }

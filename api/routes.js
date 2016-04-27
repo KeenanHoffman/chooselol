@@ -1,9 +1,11 @@
 'use strict';
 
-const router = require('express').Router();
+var router = require('express').Router();
 
-const streamersRoutes = require('./modules/streamers/streamers.routes');
+var unprotectedRoutes = require('./modules/unprotected/unprotected.routes');
+var streamersRoutes = require('./modules/streamers/streamers.routes');
 
+router.use('/', unprotectedRoutes);
 router.use('/streamer', streamersRoutes);
 
 module.exports = router;

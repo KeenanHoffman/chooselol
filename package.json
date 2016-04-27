@@ -18,11 +18,13 @@
   "homepage": "https://github.com/KeenanHoffman/chooselol#readme",
   "dependencies": {
     "body-parser": "^1.15.0",
+    "cors": "^2.7.1",
     "dotenv": "^2.0.0",
     "express": "^4.13.4",
     "irc": "^0.5.0",
     "request-promise": "^3.0.0",
     "sails-postgresql": "^0.12.1",
+    "socket.io": "^1.4.5",
     "waterline": "^0.12.1"
   }
 }

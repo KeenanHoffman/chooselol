@@ -8,6 +8,7 @@ var http = require('http');
 
 var port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
+app.sockets = {};
 
 var orm = require('../orm/orm.js');
 orm.initialize(app, app.get('port'), function(collections, connections) {
@@ -23,10 +24,17 @@ orm.initialize(app, app.get('port'), function(collections, connections) {
     debug('Listening on ' + bind);
   }
   var io = require('socket.io')(server);
-  io.on('connection', function(/*socket*/){
-    console.log('a user connected');
+  io.on('connection', function(socket){
+    if (socket.handshake.query.twitchName) {
+      console.log(socket.handshake.query.twitchName + ' connected');
+      app.sockets[socket.handshake.query.twitchName] = socket;
+    } else {
+      console.log('anonymous connected');
+    }
+    socket.on('room', function(room) {
+        socket.join(room);
+    });
   });
-  app.io = io;
 });
 
 function normalizePort(val) {

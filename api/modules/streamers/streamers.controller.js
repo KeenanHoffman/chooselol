@@ -3,21 +3,17 @@
 var ircClients = {};
 
 function createBuildLobby(req, res, next) {
-  var config = {
-    twitch_name: 'koff01',
-    twitch_chat_password: 'oauth:c4homw8vo8c1g783btkl1dm6yte8sk',
-  	channels: ["#koff01"],
-  	botName: "Choose-Bot",
-    summoner_name: 'gizmotech'
-  };
-
-
-  //check for an existing lobby
-  if(!ircClients[config.twitch_name]) {
-
+  // var config = {
+  //   twitch_name: 'koff01',
+  //   twitch_chat_password: 'oauth:c4homw8vo8c1g783btkl1dm6yte8sk',
+  // 	channels: ["#koff01"],
+  // 	botName: "Heart-Of-Gold-Bot",
+  //   summoner_name: 'gizmotech'
+  // };
+  if(!ircClients[req.body.twitch_name]) {
     //set up IRC client for the user
-    require('../../irc-client')(config, ircClients, req.io);
-    console.log('============ ' + config.twitch_name + ' Opened a New Lobby ============');
+    require('../../irc-client')(req.body, ircClients, req.sockets[req.body.twitch_name]);
+    console.log('============ ' + req.body.twitch_name + ' Opened a New Lobby ============');
     res.json('new lobby open!');
   } else {
     res.json('lobby reopened!');
@@ -25,25 +21,25 @@ function createBuildLobby(req, res, next) {
 }
 
 function acceptBuild(req, res, next) {
-  var config = {
-    twitch_name: 'koff01',
-    twitch_chat_password: 'oauth:c4homw8vo8c1g783btkl1dm6yte8sk',
-  	channels: ["#koff01"],
-  	botName: "Choose-Bot",
-    summoner_name: 'gizmotech'
-  };
+  // var config = {
+  //   twitch_name: 'koff01',
+  //   twitch_chat_password: 'oauth:c4homw8vo8c1g783btkl1dm6yte8sk',
+  // 	channels: ["#koff01"],
+  // 	botName: "Choose-Bot",
+  //   summoner_name: 'gizmotech'
+  // };
   //store ircClients[config.twitch_name].build;
 
   //remove the game lobby
-  if(ircClients[config.twitch_name]) {
+  if(ircClients[req.body.twitch_name]) {
 
     //Let chat know voting has ended
-    ircClients[config.twitch_name].say(config.channels[0], 'HeartOfGold.lol Voting Has Ended!!!');
+    ircClients[req.body.twitch_name].say(['#' + req.body.twitch_name], 'HeartOfGold.lol Voting Has Ended!!!');
 
     //disconnect from chat
-    ircClients[config.twitch_name].disconnect(function() {
-      res.json(ircClients[config.twitch_name].build);
-      ircClients[config.twitch_name].build = {
+    ircClients[req.body.twitch_name].disconnect(function() {
+      res.json(ircClients[req.body.twitch_name].build);
+      ircClients[req.body.twitch_name].build = {
         champs: {},
         masteries: {},
         runes: {},
@@ -53,8 +49,8 @@ function acceptBuild(req, res, next) {
           'e': 0
         }
       };
-      console.log('============ ' + config.twitch_name + ' Closed the Lobby ============');
-      ircClients[config.twitch_name] = null;
+      console.log('============ ' + req.body.twitch_name + ' Closed the Lobby ============');
+      ircClients[req.body.twitch_name] = null;
     });
 
   } else {

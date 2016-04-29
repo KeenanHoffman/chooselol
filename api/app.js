@@ -1,10 +1,14 @@
 'use strict';
 
+require('dotenv').load({
+  silent: true
+});
+
 var express = require('express');
 var path = require('path');
 var bodyParser = require('body-parser');
 var cors = require('cors');
-var http = require('http').Server(express);
+var expressJwt = require('express-jwt');
 
 var routes = require('./routes');
 
@@ -12,9 +16,13 @@ var app = express();
 
 app.use(function(req, res, next) {
   req.models = app.models;
-  req.io = app.io;
+  req.sockets = app.sockets;
   next();
 });
+
+app.use('/streamer', expressJwt({
+  secret: process.env.SECRET
+}));
 
 app.use(cors());
 app.use(bodyParser.json());

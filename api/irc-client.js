@@ -6,10 +6,10 @@ var request = require('request-promise');
 module.exports = function(config, clients, io) {
 
   //add a new irc client for the current user
-  clients[config.twitch_name] = new irc.Client("irc.chat.twitch.tv", config.botName, {
+  clients[config.twitch_name] = new irc.Client("irc.chat.twitch.tv", 'Heart-Of-Gold-Bot', {
     nick: config.twitch_name,
     password: config.twitch_chat_password,
-    channels: config.channels
+    channels: ['#' + config.twitch_name]
   });
 
   //add a build object for updating the front end
@@ -24,14 +24,14 @@ module.exports = function(config, clients, io) {
     }
   };
 
-  var getSumName = request('https://na.api.pvp.net/api/lol/na/v1.4/summoner/by-name/' + config.summoner_name + '?api_key=' + process.env.lolApiKey);
+  var getSumName = request('https://na.api.pvp.net/api/lol/na/v1.4/summoner/by-name/' + config.summoner_name + '?api_key=' + process.env.LOL_API_KEY);
 
   getSumName.then(function(data) {
     var sumId = JSON.parse(data)[config.summoner_name].id;
-
-    var getCurrentChamps = request('https://global.api.pvp.net/api/lol/static-data/na/v1.2/champion?api_key=' + process.env.lolApiKey);
-    var getMast = request('https://na.api.pvp.net/api/lol/na/v1.4/summoner/' + sumId + '/masteries?api_key=' + process.env.lolApiKey);
-    var getRunes = request('https://na.api.pvp.net/api/lol/na/v1.4/summoner/' + sumId + '/runes?api_key=' + process.env.lolApiKey);
+    // console.log(sumId);
+    var getCurrentChamps = request('https://global.api.pvp.net/api/lol/static-data/na/v1.2/champion?api_key=' + process.env.LOL_API_KEY);
+    var getMast = request('https://na.api.pvp.net/api/lol/na/v1.4/summoner/' + sumId + '/masteries?api_key=' + process.env.LOL_API_KEY);
+    var getRunes = request('https://na.api.pvp.net/api/lol/na/v1.4/summoner/' + sumId + '/runes?api_key=' + process.env.LOL_API_KEY);
 
     Promise.all([getCurrentChamps, getMast, getRunes]).then(function(values) {
 
@@ -56,7 +56,7 @@ module.exports = function(config, clients, io) {
       });
 
       //Let chat know voting is open
-      clients[config.twitch_name].say(config.channels[0], 'HeartOfGold.lol Voting is Open!!!');
+      clients[config.twitch_name].say('#' + config.twitch_name, 'HeartOfGold.lol Voting is Open!!!');
 
       //set an event listener for the twitch chat
       clients[config.twitch_name].addListener("message", function(from, to, text, message) {
@@ -80,11 +80,12 @@ module.exports = function(config, clients, io) {
             } else {
               clients[config.twitch_name].build.champs[champName] = 1;
             }
+            io.in(config.twitch_name).emit('build update', clients[config.twitch_name].build);
             io.emit('build update', clients[config.twitch_name].build);
           } else {
             console.log('invalid: ' + champName);
           }
-          console.log(clients[config.twitch_name].build);
+          // console.log(clients[config.twitch_name].build);
         }
 
         //check for a valid masteries input
@@ -101,11 +102,12 @@ module.exports = function(config, clients, io) {
             } else {
               clients[config.twitch_name].build.masteries[(masteryNumber - 1)] = 1;
             }
+            io.in(config.twitch_name).emit('build update', clients[config.twitch_name].build);
             io.emit('build update', clients[config.twitch_name].build);
           } else {
             console.log('invalid: ' + masteryNumber);
           }
-          console.log(clients[config.twitch_name].build);
+          // console.log(clients[config.twitch_name].build);
         }
 
         //check for a valid rune input
@@ -122,11 +124,12 @@ module.exports = function(config, clients, io) {
             } else {
               clients[config.twitch_name].build.runes[(runeNumber - 1)] = 1;
             }
+            io.in(config.twitch_name).emit('build update', clients[config.twitch_name].build);
             io.emit('build update', clients[config.twitch_name].build);
           } else {
             console.log('invalid: ' + runeNumber);
           }
-          console.log(clients[config.twitch_name].build);
+          // console.log(clients[config.twitch_name].build);
         }
 
         //check for a valid first ability to max input
@@ -139,10 +142,12 @@ module.exports = function(config, clients, io) {
           if (max === 'q' || max === 'w' || max === 'e') {
             console.log('valid: ' + max);
             clients[config.twitch_name].build.max[max]++;
+            io.in(config.twitch_name).emit('build update', clients[config.twitch_name].build);
             io.emit('build update', clients[config.twitch_name].build);
           } else {
             console.log('invalid: ' + max);
           }
+          // console.log(clients[config.twitch_name].build);
         }
 
         // if (text.split(':')[0] === '!item') {
@@ -155,6 +160,9 @@ module.exports = function(config, clients, io) {
         //
         // }
       });
+    })
+    .catch(function(err) {
+      console.error(err);
     });
   });
   // clients[config.twitch_name].addListener("join", function(channel, who) {

@@ -2,6 +2,7 @@
 
 angular.module('heartOfGoldApp')
   .controller('LoginController', ['$scope', '$http', '$window', 'userService', loginController])
+  .controller('SignupController', ['$scope', '$http', '$window', signupController])
   .controller('BuildLobbyController', ['$scope', '$http', '$window', '$routeParams', 'userService', buildLobbyController]);
 
 function loginController($scope, $http, $window, userService) {
@@ -20,6 +21,24 @@ function loginController($scope, $http, $window, userService) {
   };
 }
 
+function signupController($scope, $http, $window) {
+  $(document).ready(function() {
+    $.material.init();
+    $('.dropdown-toggle').dropdown();
+  });
+  var vm = this;
+
+  vm.signup = function() {
+    $http.post('http://localhost:3000/signup', vm.newUser)
+      .then(function(response) {
+        console.log(response);
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+  };
+}
+
 function buildLobbyController($scope, $http, $window, $routeParams, userService) {
   $(document).ready(function() {
     $.material.init();
@@ -28,18 +47,25 @@ function buildLobbyController($scope, $http, $window, $routeParams, userService)
   var vm = this;
   vm.build = null;
 
+  //Check if the streamer is the on thier own page
   if ($routeParams.twitchName === userService.getUser().twitch_name) {
+
+    //used to show buttons for only the streamer on thier own page
     vm.isStreamer = true;
+
+    //Open a new Twitch IRC lobby
     vm.openLobby = function() {
       $http.post('http://localhost:3000/streamer/build', userService.getUser())
-        .then(function() {
-
+        .then(function(response) {
+          console.log(response);
         });
     };
+
+    //Close the Twitch IRC lobby
     vm.closeLobby = function() {
       $http.post('http://localhost:3000/streamer/accept-build', userService.getUser())
-        .then(function() {
-
+        .then(function(response) {
+          console.log(response);
         });
     };
   }

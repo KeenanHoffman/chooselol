@@ -33,6 +33,8 @@ function signup(req, res, next) {
   userValidation.isValidAccount(req.body, req.models.streamer)
     .then(function(result) {
       if (result) {
+        req.body.twitch_name = req.body.twitch_name.toLowerCase().trim();
+        req.body.summoner_name = req.body.summoner_name.toLowerCase().trim();
         bcryptService.hashPassword(req.body.password).then(function(hashedPassword) {
           req.body.password = hashedPassword;
           req.models.streamer.create(req.body, function(err) {

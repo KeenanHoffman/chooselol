@@ -12,10 +12,10 @@ angular.module('heartOfGoldApp').config(function($routeProvider, $locationProvid
       controller: 'BuildLobbyController as BLC',
       activetab: 'buildLobby'
     })
-    .when('/material', {
-      templateUrl: '../views/material.html',
-      controller: 'BuildLobbyController as BLC',
-      activetab: 'material'
+    .when('/signup', {
+      templateUrl: '../views/signup.html',
+      controller: 'SignupController as SC',
+      activetab: 'signup'
     })
     .otherwise({
       redirectTo: "/"

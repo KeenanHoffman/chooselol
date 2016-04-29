@@ -45,10 +45,19 @@ function buildLobbyController($scope, $http, $window, $routeParams, userService)
     $('.dropdown-toggle').dropdown();
   });
   var vm = this;
-  vm.build = null;
+
+
 
   //Check if the streamer is the on thier own page
   if ($routeParams.twitchName === userService.getUser().twitch_name) {
+
+    //get the current build
+    $http.post('http://localhost:3000/streamer/build', userService.getUser())
+      .then(function(response) {
+        vm.masteryPages = response.data.masteryPages;
+        vm.runePages = response.data.runePages;
+        vm.build = response.data.votes;
+      });
 
     //used to show buttons for only the streamer on thier own page
     vm.isStreamer = true;
@@ -68,6 +77,13 @@ function buildLobbyController($scope, $http, $window, $routeParams, userService)
           console.log(response);
         });
     };
+  } else {
+    $http.get('http://localhost:3000/streamer/build/' + $routeParams.twitchName)
+      .then(function(response) {
+        vm.masteryPages = response.data.masteryPages;
+        vm.runePages = response.data.runePages;
+        vm.build = response.data.votes;
+      });
   }
   var socket;
   if (userService.getUser().id === 'none') {

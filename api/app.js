@@ -17,6 +17,7 @@ var app = express();
 app.use(function(req, res, next) {
   req.models = app.models;
   req.sockets = app.sockets;
+  req.ircClients = {};
   next();
 });
 

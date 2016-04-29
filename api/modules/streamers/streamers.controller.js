@@ -3,35 +3,30 @@
 var ircClients = {};
 
 function createBuildLobby(req, res, next) {
-  // var config = {
-  //   twitch_name: 'koff01',
-  //   twitch_chat_password: 'oauth:c4homw8vo8c1g783btkl1dm6yte8sk',
-  // 	channels: ["#koff01"],
-  // 	botName: "Heart-Of-Gold-Bot",
-  //   summoner_name: 'gizmotech'
-  // };
-  if(!ircClients[req.body.twitch_name]) {
+
+  //open a new build lobby under the streamers Twitch name
+  if(!ircClients[req.body.twitch_name])
+  {
     //set up IRC client for the user
-    require('../../irc-client')(req.body, ircClients, req.sockets[req.body.twitch_name]);
-    console.log('============ ' + req.body.twitch_name + ' Opened a New Lobby ============');
-    res.json('new lobby open!');
+    require('../../irc-client')(req.body, ircClients, req.sockets[req.body.twitch_name])
+    .then(function(newBuild) {
+      console.log('============ ' + req.body.twitch_name + ' Opened a New Lobby ============');
+
+      //respond with an new build
+      res.json(newBuild);
+    });
   } else {
-    res.json('lobby reopened!');
+
+    //respond with the current build
+    res.json(ircClients[req.body.twitch_name].build);
   }
 }
 
 function acceptBuild(req, res, next) {
-  // var config = {
-  //   twitch_name: 'koff01',
-  //   twitch_chat_password: 'oauth:c4homw8vo8c1g783btkl1dm6yte8sk',
-  // 	channels: ["#koff01"],
-  // 	botName: "Choose-Bot",
-  //   summoner_name: 'gizmotech'
-  // };
+
   //store ircClients[config.twitch_name].build;
 
-  //remove the game lobby
-
+  //remove the build lobby if it exists
   if(ircClients[req.body.twitch_name]) {
 
     //Let chat know voting has ended
@@ -41,13 +36,17 @@ function acceptBuild(req, res, next) {
     ircClients[req.body.twitch_name].disconnect(function() {
       res.json(ircClients[req.body.twitch_name].build);
       ircClients[req.body.twitch_name].build = {
-        champs: {},
-        masteries: {},
-        runes: {},
-        max: {
-          'q': 0,
-          'w': 0,
-          'e': 0
+        masteryPages: '',
+        runePages: '',
+        votes: {
+          champs: {},
+          masteries: {},
+          runes: {},
+          max: {
+            'q': 0,
+            'w': 0,
+            'e': 0
+          }
         }
       };
       console.log('============ ' + req.body.twitch_name + ' Closed the Lobby ============');

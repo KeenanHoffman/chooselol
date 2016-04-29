@@ -31,6 +31,7 @@ function acceptBuild(req, res, next) {
   //store ircClients[config.twitch_name].build;
 
   //remove the game lobby
+
   if(ircClients[req.body.twitch_name]) {
 
     //Let chat know voting has ended

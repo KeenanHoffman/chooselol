@@ -37,9 +37,9 @@ function buildLobbyController($scope, $http, $window, $routeParams, userService)
         });
     };
     vm.closeLobby = function() {
-      $http.get('http://localhost:3000/streamer/accept-build')
-        .then(function(res) {
-          // vm.build = res;
+      $http.post('http://localhost:3000/streamer/accept-build', userService.getUser())
+        .then(function() {
+
         });
     };
   }

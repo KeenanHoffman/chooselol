@@ -5,6 +5,7 @@ var request = require('request-promise');
 
 module.exports = function(config, clients, io) {
   return new Promise(function(resolve) {
+
     //add a new irc client for the current user
     clients[config.twitch_name] = new irc.Client("irc.chat.twitch.tv", 'Heart-Of-Gold-Bot', {
       nick: config.twitch_name,
@@ -14,6 +15,8 @@ module.exports = function(config, clients, io) {
 
     //add a build object for updating the front end
     clients[config.twitch_name].build = {
+      lobbyIsOpen: true,
+      summoner_id: '',
       masteryPages: '',
       runePages: '',
       votes: {
@@ -32,7 +35,9 @@ module.exports = function(config, clients, io) {
 
     getSumName.then(function(data) {
       var sumId = JSON.parse(data)[config.summoner_name].id;
-      // console.log(sumId);
+
+      clients[config.twitch_name].build.summoner_id = sumId;
+
       var getCurrentChamps = request('https://global.api.pvp.net/api/lol/static-data/na/v1.2/champion?api_key=' + process.env.LOL_API_KEY);
       var getMast = request('https://na.api.pvp.net/api/lol/na/v1.4/summoner/' + sumId + '/masteries?api_key=' + process.env.LOL_API_KEY);
       var getRunes = request('https://na.api.pvp.net/api/lol/na/v1.4/summoner/' + sumId + '/runes?api_key=' + process.env.LOL_API_KEY);
@@ -86,8 +91,8 @@ module.exports = function(config, clients, io) {
                 } else {
                   clients[config.twitch_name].build.votes.champs[champName] = 1;
                 }
-                io.in(config.twitch_name).emit('build update', clients[config.twitch_name].build.votes);
-                io.emit('build update', clients[config.twitch_name].build.votes);
+                io.in(config.twitch_name).emit('build update', clients[config.twitch_name].build);
+                io.emit('build update', clients[config.twitch_name].build);
               } else {
                 console.log('invalid: ' + champName);
               }
@@ -108,8 +113,8 @@ module.exports = function(config, clients, io) {
                 } else {
                   clients[config.twitch_name].build.votes.masteries[(masteryNumber - 1)] = 1;
                 }
-                io.in(config.twitch_name).emit('build update', clients[config.twitch_name].build.votes);
-                io.emit('build update', clients[config.twitch_name].build.votes);
+                io.in(config.twitch_name).emit('build update', clients[config.twitch_name].build);
+                io.emit('build update', clients[config.twitch_name].build);
               } else {
                 console.log('invalid: ' + masteryNumber);
               }
@@ -130,8 +135,8 @@ module.exports = function(config, clients, io) {
                 } else {
                   clients[config.twitch_name].build.votes.runes[(runeNumber - 1)] = 1;
                 }
-                io.in(config.twitch_name).emit('build update', clients[config.twitch_name].build.votes);
-                io.emit('build update', clients[config.twitch_name].build.votes);
+                io.in(config.twitch_name).emit('build update', clients[config.twitch_name].build);
+                io.emit('build update', clients[config.twitch_name].build);
               } else {
                 console.log('invalid: ' + runeNumber);
               }
@@ -148,8 +153,8 @@ module.exports = function(config, clients, io) {
               if (max === 'q' || max === 'w' || max === 'e') {
                 console.log('valid: ' + max);
                 clients[config.twitch_name].build.votes.max[max]++;
-                io.in(config.twitch_name).emit('build update', clients[config.twitch_name].build.votes);
-                io.emit('build update', clients[config.twitch_name].build.votes);
+                io.in(config.twitch_name).emit('build update', clients[config.twitch_name].build);
+                io.emit('build update', clients[config.twitch_name].build);
               } else {
                 console.log('invalid: ' + max);
               }

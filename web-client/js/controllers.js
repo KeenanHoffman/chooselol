@@ -46,18 +46,24 @@ function buildLobbyController($scope, $http, $window, $routeParams, userService)
   });
   var vm = this;
 
-
-
-  //Check if the streamer is the on thier own page
-  if ($routeParams.twitchName === userService.getUser().twitch_name) {
-
-    //get the current build
-    $http.post('http://localhost:3000/streamer/build', userService.getUser())
-      .then(function(response) {
+  //check if a lobby is currently open
+  $http.post('http://localhost:3000/streamer/get-lobby-status', $routeParams)
+    .then(function(response) {
+      console.log(response);
+      if (response.data === 'lobby closed') {
+        vm.lobbyIsOpen = false;
+      } else {
+        vm.lobbyIsOpen = true;
         vm.masteryPages = response.data.masteryPages;
         vm.runePages = response.data.runePages;
         vm.build = response.data.votes;
-      });
+      }
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
+  //Check if the streamer is the on thier own page
+  if ($routeParams.twitchName === userService.getUser().twitch_name) {
 
     //used to show buttons for only the streamer on thier own page
     vm.isStreamer = true;
@@ -66,7 +72,13 @@ function buildLobbyController($scope, $http, $window, $routeParams, userService)
     vm.openLobby = function() {
       $http.post('http://localhost:3000/streamer/build', userService.getUser())
         .then(function(response) {
-          console.log(response);
+          vm.lobbyIsOpen = response.data.lobbyIsOpen;
+          vm.masteryPages = response.data.masteryPages;
+          vm.runePages = response.data.runePages;
+          vm.build = response.data.votes;
+        })
+        .catch(function(error) {
+          console.log(error);
         });
     };
 
@@ -75,16 +87,13 @@ function buildLobbyController($scope, $http, $window, $routeParams, userService)
       $http.post('http://localhost:3000/streamer/accept-build', userService.getUser())
         .then(function(response) {
           console.log(response);
+        })
+        .catch(function(error) {
+          console.log(error);
         });
     };
-  } else {
-    $http.get('http://localhost:3000/streamer/build/' + $routeParams.twitchName)
-      .then(function(response) {
-        vm.masteryPages = response.data.masteryPages;
-        vm.runePages = response.data.runePages;
-        vm.build = response.data.votes;
-      });
   }
+
   var socket;
   if (userService.getUser().id === 'none') {
     socket = io.connect('http://localhost:3000');
@@ -100,8 +109,14 @@ function buildLobbyController($scope, $http, $window, $routeParams, userService)
   });
   socket.on('build update', function(updatedBuild) {
     $scope.$apply(function() {
-      console.log(updatedBuild);
-      vm.build = updatedBuild;
+      vm.lobbyIsOpen = updatedBuild.lobbyIsOpen;
+      if (updatedBuild.lobbyIsOpen) {
+        vm.build = updatedBuild.votes;
+        vm.masteryPages = updatedBuild.masteryPages;
+        vm.runePages = updatedBuild.runePages;
+      } else {
+        vm.finalBuild = updatedBuild.votes;
+      }
     });
   });
 }

@@ -17,13 +17,12 @@ var app = express();
 app.use(function(req, res, next) {
   req.models = app.models;
   req.sockets = app.sockets;
-  req.ircClients = {};
   next();
 });
 
 app.use('/streamer', expressJwt({
   secret: process.env.SECRET
-}));
+}).unless({path: ['/streamer/get-build', '/streamer/get-lobby-status']}));
 
 app.use(cors());
 app.use(bodyParser.json());

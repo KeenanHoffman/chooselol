@@ -1,0 +1,380 @@
+#masteries-container {
+  float: left;
+  position: relative;
+}
+.mastery-page-tab {
+  float: left;
+}
+
+.activepage {
+  background-color: blue !important; 
+}
+
+/*Masteries*/
+
+#masteries {
+  clear: left;
+}
+
+/*Ferocity*/
+
+#fury {
+  top: 4.8%;
+  left: 5.8%;
+  position: absolute;
+  height: 9.3%;
+}
+.fury_points {
+  top: 12.8%;
+  left: 7.9%;
+  position: absolute;
+  height: 3.5%;
+}
+#sorcery {
+  top: 4.7%;
+  left: 21.9%;
+  position: absolute;
+  height: 9.3%;
+}
+.sorcery_points {
+  top: 12.8%;
+  left: 24.2%;
+  position: absolute;
+  height: 3.5%;
+}
+#double-edged-sword {
+  top: 19.8%;
+  left: 5.8%;
+  position: absolute;
+  height: 10.5%;
+}
+#feast {
+  top: 19.8%;
+  left: 14%;
+  position: absolute;
+  height: 10.5%;
+}
+#expose-weakness {
+  top: 19.8%;
+  left: 22%;
+  position: absolute;
+  height: 10.5%;
+}
+#vamperism {
+  top: 34.5%;
+  left: 5.8%;
+  position: absolute;
+  height: 9.3%;
+}
+.vamperism_points {
+  top: 42.2%;
+  left: 7.9%;
+  position: absolute;
+  height: 3.5%;
+}
+#natural-talent {
+  top: 34.5%;
+  left: 21.9%;
+  position: absolute;
+  height: 9.3%;
+}
+.natural-talent_points {
+  top: 42.2%;
+  left: 24.2%;
+  position: absolute;
+  height: 3.5%;
+}
+#bouty-hunter {
+  top: 49.5%;
+  left: 9.9%;
+  position: absolute;
+  height: 10.5%;
+}
+#oppressor {
+  top: 49.5%;
+  left: 17.9%;
+  position: absolute;
+  height: 10.5%;
+}
+#battering-blows {
+  top: 64.2%;
+  left: 5.8%;
+  position: absolute;
+  height: 9.3%;
+}
+.battering-blows_points {
+  top: 72.3%;
+  left: 7.9%;
+  position: absolute;
+  height: 3.5%;
+}
+#piercing-thoughts {
+  top: 64.2%;
+  left: 22%;
+  position: absolute;
+  height: 9.3%;
+}
+.piercing-thoughts_points {
+  top: 72.3%;
+  left: 24.2%;
+  position: absolute;
+  height: 3.5%;
+}
+#warlords-bloodlust {
+  top: 79.2%;
+  left: 5.8%;
+  position: absolute;
+  height: 10.5%;
+}
+#fervor-of-battle {
+  top: 79.2%;
+  left: 13.9%;
+  position: absolute;
+  height: 10.5%;
+}
+#deathfire-touch {
+  top: 79.2%;
+  left: 22%;
+  position: absolute;
+  height: 10.5%;
+}
+
+/*Cunning*/
+
+#wanderer {
+  top: 4.8%;
+  left: 38.9%;
+  position: absolute;
+  height: 9.3%;
+}
+.wanderer_points {
+  top: 12.8%;
+  left: 41.4%;
+  position: absolute;
+  height: 3.5%;
+}
+#savagery {
+  top: 4.8%;
+  left: 55%;
+  position: absolute;
+  height: 9.3%;
+}
+.savagery_points {
+  top: 12.8%;
+  left: 57.4%;
+  position: absolute;
+  height: 3.5%;
+}
+#runic-affinity {
+  top: 19.8%;
+  left: 38.9%;
+  position: absolute;
+  height: 10.5%;
+}
+#secret-stash {
+  top: 19.8%;
+  left: 47.1%;
+  position: absolute;
+  height: 10.5%;
+}
+#assassin {
+  top: 19.8%;
+  left: 55.2%;
+  position: absolute;
+  height: 10.5%;
+}
+#merciless {
+  top: 34.5%;
+  left: 38.9%;
+  position: absolute;
+  height: 9.3%;
+}
+.merciless_points {
+  top: 42.2%;
+  left: 41.4%;
+  position: absolute;
+  height: 3.5%;
+}
+#meditation {
+  top: 34.5%;
+  left: 55.1%;
+  position: absolute;
+  height: 9.3%;
+}
+.meditation_points {
+  top: 42.2%;
+  left: 57.4%;
+  position: absolute;
+  height: 3.5%;
+}
+#bandit {
+  top: 49.5%;
+  left: 43.1%;
+  position: absolute;
+  height: 10.5%;
+}
+#dangerous-game {
+  top: 49.5%;
+  left: 51.2%;
+  position: absolute;
+  height: 10.5%;
+}
+#precision {
+  top: 64.2%;
+  left: 38.9%;
+  position: absolute;
+  height: 9.3%;
+}
+.precision_points {
+  top: 72.3%;
+  left: 41.4%;
+  position: absolute;
+  height: 3.5%;
+}
+#intelligence {
+  top: 64.2%;
+  left: 55.1%;
+  position: absolute;
+  height: 9.3%;
+}
+.intelligence_points {
+  top: 72.3%;
+  left: 57.4%;
+  position: absolute;
+  height: 3.5%;
+}
+#stormraiderss-surge {
+  top: 79.2%;
+  left: 39%;
+  position: absolute;
+  height: 10.5%;
+}
+#thunderlords-decree {
+  top: 79.2%;
+  left: 47.1%;
+  position: absolute;
+  height: 10.5%;
+}
+#windspeakers-blessing {
+  top: 79.2%;
+  left: 55.2%;
+  position: absolute;
+  height: 10.5%;
+}
+
+/*Resolve*/
+
+#recovery {
+  top: 4.8%;
+  left: 72.2%;
+  position: absolute;
+  height: 9.3%;
+}
+.recovery_points {
+  top: 12.8%;
+  left: 74.8%;
+  position: absolute;
+  height: 3.5%;
+}
+#unyielding {
+  top: 4.8%;
+  left: 88.4%;
+  position: absolute;
+  height: 9.3%;
+}
+.unyielding_points {
+  top: 12.8%;
+  left: 90.8%;
+  position: absolute;
+  height: 3.5%;
+}
+#explorer {
+  top: 19.8%;
+  left: 76.3%;
+  position: absolute;
+  height: 10.5%;
+}
+#tough-skin {
+  top: 19.8%;
+  left: 84.4%;
+  position: absolute;
+  height: 10.5%;
+}
+#runic-armor {
+  top: 34.5%;
+  left: 72.2%;
+  position: absolute;
+  height: 9.3%;
+}
+.runic-armor_points {
+  top: 42.2%;
+  left: 74.8%;
+  position: absolute;
+  height: 3.5%;
+}
+#veterans-scars {
+  top: 34.5%;
+  left: 88.4%;
+  position: absolute;
+  height: 9.3%;
+}
+.veterans-scars_points {
+  top: 42.2%;
+  left: 90.8%;
+  position: absolute;
+  height: 3.5%;
+}
+#insight {
+  top: 49.5%;
+  left: 76.3%;
+  position: absolute;
+  height: 10.5%;
+}
+#perseverance {
+  top: 49.5%;
+  left: 84.4%;
+  position: absolute;
+  height: 10.5%;
+}
+#swiftness {
+  top: 64.2%;
+  left: 72.2%;
+  position: absolute;
+  height: 9.3%;
+}
+.swiftness_points {
+  top: 72.3%;
+  left: 74.8%;
+  position: absolute;
+  height: 3.5%;
+}
+#legendary-guardian {
+  top: 64.2%;
+  left: 88.4%;
+  position: absolute;
+  height: 9.3%;
+}
+.legendary-guardian_points {
+  top: 72.3%;
+  left: 90.8%;
+  position: absolute;
+  height: 3.5%;
+}
+#grasp-of-the-undying {
+  top: 79.2%;
+  left: 72.2%;
+  position: absolute;
+  height: 10.5%;
+}
+#strength-of-the-ages {
+  top: 79.2%;
+  left: 80.3%;
+  position: absolute;
+  height: 10.5%;
+}
+#bond-of-stone {
+  top: 79.2%;
+  left: 88.4%;
+  position: absolute;
+  height: 10.5%;
+}

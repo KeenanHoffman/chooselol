@@ -45,6 +45,13 @@ function buildLobbyController($scope, $http, $window, $routeParams, userService)
     $('.dropdown-toggle').dropdown();
   });
   var vm = this;
+  vm.changeActiveMasteryPage = function(page) {
+    if (vm.active === page) {
+      vm.active = null;
+    } else {
+      vm.active = page;
+    }
+  };
 
   //check if a lobby is currently open
   $http.post('http://localhost:3000/streamer/get-lobby-status', $routeParams)
@@ -116,6 +123,36 @@ function buildLobbyController($scope, $http, $window, $routeParams, userService)
         vm.runePages = updatedBuild.runePages;
       } else {
         vm.finalBuild = updatedBuild.votes;
+
+        var votes = 0;
+        for(var champ in vm.finalBuild.champs) {
+          if(vm.finalBuild.champs[champ] > votes) {
+            vm.firstChamp = [champ];
+            votes = vm.finalBuild.champs[champ];
+          } else if(vm.finalBuild.champs[champ] === votes) {
+            vm.firstChamp.push(champ);
+          }
+        }
+
+        var votes = 0;
+        for(var masteryPage in vm.finalBuild.masteries) {
+          if(vm.finalBuild.masteries[masteryPage] > votes) {
+            vm.firstMasteryPage = [masteryPage];
+            votes = vm.finalBuild.masteries[masteryPage];
+          } else if(vm.finalBuild.masteries[masteryPage] === votes) {
+            vm.firstChamp.push(masteryPage);
+          }
+        }
+
+        var votes = 0;
+        for(var runePage in vm.finalBuild.runes) {
+          if(vm.finalBuild.runes[runePage] > votes) {
+            vm.firstRunePage = [runePage];
+            votes = vm.finalBuild.runes[runePage];
+          } else if(vm.finalBuild.runes[runePage] === votes) {
+            vm.firstRunePage.push(runePage);
+          }
+        }
       }
     });
   });

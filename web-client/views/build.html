@@ -1,3 +1,5 @@
+<link rel="stylesheet" href="/style/build.css" media="screen" title="no title" charset="utf-8">
+
 <h1>Home</h1>
 <button ng-if="BLC.isStreamer && !BLC.lobbyIsOpen" type="button" ng-click="BLC.openLobby()">New Build Lobby</button>
 <button ng-if="BLC.isStreamer && BLC.lobbyIsOpen" type="button" ng-click="BLC.closeLobby()">Close Build Lobby</button>
@@ -6,5 +8,23 @@
 <pre ng-if="BLC.lobbyIsOpen">{{BLC.masteryPages}}</pre>
 <pre ng-if="BLC.lobbyIsOpen">{{BLC.runePages}}</pre>
 
+<div ng-repeat="(pageName, masteryPage) in BLC.masteryPages track by $index">
+  <div class="mastery-page-tab">
+    <button class="btn btn-raised btn-info btn-sm" ng-class="{ activepage: BLC.active === pageName }" ng-click="BLC.changeActiveMasteryPage(pageName)" type="button" name="button">{{$index + 1}}: {{pageName}}</button>
+  </div>
+</div>
+<div id="masteries" ng-repeat="(pageName, masteryPage) in BLC.masteryPages">
+  <create-masteries-page ng-if="BLC.active === pageName" page="masteryPage"></create-masteries-page>
+</div>
+
 <h1>Final Build</h1>
+<div ng-repeat="champ in BLC.firstChamp">
+  <h3>{{champ}}</h3>
+</div>
+<div ng-repeat="masteryPage in BLC.firstMasteryPage">
+  <h3>{{masteryPage}}</h3>
+</div>
+<div ng-repeat="runePage in BLC.firstRunePage">
+  <h3>{{runePage}}</h3>
+</div>
 <pre>{{BLC.finalBuild}}</pre>

@@ -54,9 +54,17 @@ module.exports = function(config, clients, io) {
 
           //set up the mastery pages array for validation of chat input
           var masteryPages = [];
-          clients[config.twitch_name].build.masteryPages = JSON.parse(values[1])[sumId].pages;
+          clients[config.twitch_name].build.masteryPages = {};
           JSON.parse(values[1])[sumId].pages.forEach(function(page) {
             masteryPages.push(page.name);
+            console.log(page);
+            clients[config.twitch_name].build.masteryPages[page.name] = {};
+            if(page.masteries) {
+              page.masteries.forEach(function(mastery) {
+                console.log(mastery);
+                clients[config.twitch_name].build.masteryPages[page.name][mastery.id] = mastery.rank;
+              });
+            }
           });
 
           //set up rune pages array for validation of chat input
